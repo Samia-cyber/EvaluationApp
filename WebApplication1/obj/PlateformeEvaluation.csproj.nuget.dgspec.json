@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jrida\\source\\repos\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj": {}
+    "C:\\Users\\jrida\\Desktop\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jrida\\source\\repos\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj": {
+    "C:\\Users\\jrida\\Desktop\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jrida\\source\\repos\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj",
+        "projectUniqueName": "C:\\Users\\jrida\\Desktop\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj",
         "projectName": "PlateformeEvaluation",
-        "projectPath": "C:\\Users\\jrida\\source\\repos\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj",
+        "projectPath": "C:\\Users\\jrida\\Desktop\\WebApplication1\\WebApplication1\\PlateformeEvaluation.csproj",
         "packagesPath": "C:\\Users\\jrida\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jrida\\source\\repos\\WebApplication1\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Users\\jrida\\Desktop\\WebApplication1\\WebApplication1\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jrida\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jrida\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -70,6 +63,10 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[9.0.10, )"
             },

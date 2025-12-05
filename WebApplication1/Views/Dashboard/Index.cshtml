@@ -1,0 +1,224 @@
+@using System.Text.Json
+@using System.Linq
+@model PlateformeEvaluation.Controllers.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var evaluationsCount = Model.AvailableEvaluations?.Count() ?? 0;
+    var completedCount = Model.RecentTentatives?.Count(t => t.Score > 0) ?? 0;
+    var inProgressCount = Model.RecentTentatives?.Count(t => t.Score == 0) ?? 0;
+    var avgScore = Model.RecentTentatives != null && Model.RecentTentatives.Any() ? Math.Round(Model.RecentTentatives.Average(t => t.Score), 1) : 0;
+    var timeTotal = Model.AvailableEvaluations?.Sum(e => e.DureeMinutes) ?? 0;
+    var bestScore = Model.RecentTentatives != null && Model.RecentTentatives.Any() ? Model.RecentTentatives.Max(t => t.Score) : 0;
+}
+
+<div class="dashboard-page container">
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills mb-4" id="dashboard-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" data-tab="dashboard">📊 Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-tab="evaluations">📝 Quiz/Évaluations</a>
+        </li>
+    </ul>
+
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard" class="tab-panel">
+        <div class="card p-3 mb-3">
+            <h4>Bienvenue, @Model.UserName</h4>
+            <hr />
+
+            <!-- Summary / Stat Cards -->
+            <div class="summary-cards mt-3">
+                <div class="summary-card">
+                    <span class="stat-title">📝 Évaluations disponibles</span>
+                    <span class="stat-value">@evaluationsCount</span>
+                </div>
+                <div class="summary-card">
+                    <span class="stat-title">✅ Complétées</span>
+                    <span class="stat-value">@completedCount</span>
+                </div>
+                <div class="summary-card">
+                    <span class="stat-title">📈 Score moyen</span>
+                    <span class="stat-value">@avgScore%</span>
+                </div>
+                <div class="summary-card">
+                    <span class="stat-title">🎯 En cours</span>
+                    <span class="stat-value">@inProgressCount</span>
+                </div>
+                <div class="summary-card">
+                    <span class="stat-title">⏱️ Temps total</span>
+                    <span class="stat-value">@timeTotal min</span>
+                </div>
+                <div class="summary-card">
+                    <span class="stat-title">🏆 Meilleur score</span>
+                    <span class="stat-value">@bestScore%</span>
+                </div>
+            </div>
+
+            <!-- Progression -->
+            <div class="mt-4">
+                <h6>Progression globale</h6>
+                @{ var progressPercent = evaluationsCount > 0 ? (int)Math.Round((double)completedCount / evaluationsCount * 100) : 0; }
+                <div class="progress" style="height:14px; background: rgba(255,255,255,0.06); border-radius:8px;">
+                    <div class="progress-bar" role="progressbar" style="width:@progressPercent% ; background: linear-gradient(90deg,var(--primary),var(--secondary));">@progressPercent% </div>
+                </div>
+            </div>
+
+            <!-- Historique récent -->
+            <div class="history-section">
+                <h5 class="mt-4">Historique récent</h5>
+                @if (!Model.RecentTentatives.Any())
+                {
+                    <div class="card p-3 text-center">
+                        <p class="mb-2">Aucune activité récente.</p>
+                        <a href="#" class="btn btn-primary" data-tab-switch="evaluations">Voir les évaluations</a>
+                    </div>
+                }
+                else
+                {
+                    <ul class="history-list">
+                        @foreach (var t in Model.RecentTentatives.OrderByDescending(t=>t.DatePassage).Take(5))
+                        {
+                            var status = t.Score > 75 ? "Réussi" : (t.Score > 0 ? "Partiellement" : "En cours");
+                            var badgeClass = t.Score > 75 ? "badge-success" : (t.Score > 0 ? "badge-warning" : "badge-secondary");
+                            <li class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@(t.Evaluation?.Titre ?? "Évaluation")</strong>
+                                    <div class="text-muted small">@t.DatePassage.ToLocalTime().ToString("g")</div>
+                                </div>
+                                <div class="text-end">
+                                    <div><span class="fw-bold">@t.Score%</span></div>
+                                    <div class="mt-1"><span class="badge @badgeClass">@status</span></div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            <!-- Recommandations -->
+            <div class="mt-4">
+                <h5>Recommandations</h5>
+                <div class="d-flex gap-3 flex-wrap">
+                    @foreach (var ev in Model.AvailableEvaluations.Take(3))
+                    {
+                        <div class="summary-card" style="min-width:200px; max-width:320px; text-align:left;">
+                            <div class="stat-title">🧭 @ev.Titre</div>
+                            <div class="text-muted small">@((ev.Description??"").Length>100 ? (ev.Description.Substring(0,100)+"...") : ev.Description)</div>
+                            <div class="mt-2"><button class="btn btn-sm btn-primary eval-btn" data-evalid="@ev.Id">Commencer</button></div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EVALUATIONS TAB -->
+    <div id="tab-evaluations" class="tab-panel d-none">
+        <div class="card p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex gap-2 align-items-center">
+                    <div>
+                        <input id="eval-search" class="form-control" placeholder="Rechercher une évaluation..." />
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Filters">
+                        <button type="button" class="btn btn-outline-light filter-btn active" data-filter="all">Toutes</button>
+                        <button type="button" class="btn btn-outline-light filter-btn" data-filter="todo">À faire</button>
+                        <button type="button" class="btn btn-outline-light filter-btn" data-filter="inprogress">En cours</button>
+                        <button type="button" class="btn btn-outline-light filter-btn" data-filter="completed">Complétées</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="evaluations-grid">
+                @if (!Model.AvailableEvaluations.Any())
+                {
+                    <div class="col-12 text-center py-5">
+                        <img src="/img/empty.svg" alt="Aucune évaluation" style="max-width:220px;opacity:0.8;" />
+                        <h5 class="mt-3">Aucune évaluation disponible</h5>
+                        <p class="text-muted">Retournez bientôt pour de nouvelles évaluations.</p>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var ev in Model.AvailableEvaluations)
+                    {
+                        var qCount = ev.Questions?.Count() ?? 0;
+                        var tent = Model.RecentTentatives?.FirstOrDefault(t => t.EvaluationId == ev.Id);
+                        var status = tent == null ? "Nouveau" : (tent.Score > 0 ? "Complété" : "En cours");
+                        var badgeClass = tent == null ? "badge-primary" : (tent.Score > 0 ? "badge-success" : "badge-warning");
+                        var successRate = Model.RecentTentatives != null && Model.RecentTentatives.Any(t=>t.EvaluationId==ev.Id) ? Math.Round(Model.RecentTentatives.Where(t=>t.EvaluationId==ev.Id).Average(t=>t.Score),1) : 0;
+                        var progress = tent != null && evaluationsCount>0 ? (int)Math.Round(tent.Score) : 0;
+                        <div class="col-md-6 col-lg-4 mb-3 eval-card" data-status="@status.ToLower()">
+                            <div class="card p-3" style="border-radius:12px;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">🗂️ @ev.Titre</h6>
+                                        <div class="text-muted small">@((ev.Description??"").Length>120 ? (ev.Description.Substring(0,120)+"...") : ev.Description)</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge @badgeClass">@status</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="small text-muted">⏱ @ev.DureeMinutes min • 🧾 @qCount questions</div>
+                                    <div class="small text-muted">Niveau: Intermédiaire</div>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="progress" style="height:10px;background:rgba(0,0,0,0.06);border-radius:8px;">
+                                        <div class="progress-bar" role="progressbar" style="width:@progress% ; background: linear-gradient(90deg,var(--primary),var(--secondary));">@progress%</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary eval-btn" data-evalid="@ev.Id">@((tent==null) ? "Commencer" : (tent.Score>0 ? "Réviser" : "Continuer"))</button>
+                                    <a href="#" class="btn btn-sm btn-outline-light">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@* Serialize evaluations to JS for client side *@
+<script>
+    window.__EVALS = @Html.Raw(JsonSerializer.Serialize(Model.AvailableEvaluations, new System.Text.Json.JsonSerializerOptions { ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles }));
+</script>
+
+<script src="/js/inline-quiz.js"></script>
+
+<script>
+// Simple client-side search and filter for evaluation cards
+(function(){
+    const search = document.getElementById('eval-search');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = Array.from(document.querySelectorAll('.eval-card'));
+
+    function applyFilter(){
+        const q = (search && search.value|| '').toLowerCase();
+        const active = Array.from(filterBtns).find(b=>b.classList.contains('active'))?.getAttribute('data-filter') || 'all';
+        cards.forEach(c=>{
+            const title = c.querySelector('h6')?.textContent.toLowerCase()||'';
+            const desc = c.querySelector('.text-muted')?.textContent.toLowerCase()||'';
+            const status = c.getAttribute('data-status')||'all';
+            const matchesSearch = !q || title.includes(q) || desc.includes(q);
+            const matchesFilter = active==='all' || (active==='todo' && status==='nouveau') || (active==='inprogress' && status==='en cours') || (active==='completed' && status==='complété');
+            c.style.display = (matchesSearch && matchesFilter) ? '' : 'none';
+        });
+    }
+
+    if(search){ search.addEventListener('input', applyFilter); }
+    filterBtns.forEach(b=> b.addEventListener('click', function(){ filterBtns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); applyFilter(); }));
+
+    // allow tab switch from CTA links
+    document.querySelectorAll('[data-tab-switch]').forEach(a=>{
+        a.addEventListener('click', function(e){ e.preventDefault(); const t = a.getAttribute('data-tab-switch'); document.querySelectorAll('#dashboard-tabs .nav-link').forEach(n=>n.classList.toggle('active', n.getAttribute('data-tab')===t)); document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('d-none', p.id !== 'tab-'+t)); });
+    });
+})();
+</script>
