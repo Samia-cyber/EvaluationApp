@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Résultat";
+}
+
+<div class="container text-center mt-5">
+    <h2 class="fw-bold">Résultat de l'évaluation</h2>
+
+    <h1 class="display-4 my-4">
+        @ViewBag.Score / @ViewBag.Total
+    </h1>
+
+    <a href="/Evaluations/Passer/@ViewBag.EvaluationId" class="btn btn-primary">
+        Recommencer
+    </a>
+</div>
