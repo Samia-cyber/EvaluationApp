@@ -1,53 +1,109 @@
 @model IEnumerable<WebApplication1.Models.Evaluation>
+    @{
+    ViewData["Title"] = "Évaluations";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var culture = new System.Globalization.CultureInfo("fr-FR");
+    }
 
-@{
-    ViewData["Title"] = "Index";
+    <div style="margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: 2rem; font-weight: 700; color: #111827; margin: 0;">Évaluations</h1>
+                <p style="color: #6b7280; margin-top: 0.5rem;">Gérez vos tests et évaluations</p>
+            </div>
+            <a asp-action="Create" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.3s;">
+                <span style="font-size: 1.2rem;">+</span>
+                Créer une évaluation
+            </a>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+{
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+        @foreach (var eval in Model)
+        {
+        <div style="background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; transition: all 0.3s; position: relative; overflow: hidden;">
+
+            <!-- Badge durée en haut à droite -->
+            <div style="position: absolute; top: 1rem; right: 1rem;">
+                <span style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                    @eval.DureeMinutes min
+                </span>
+            </div>
+
+            <!-- Titre -->
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0 0 0.75rem 0; padding-right: 5rem;">
+                @eval.Titre
+            </h3>
+
+            <!-- Description -->
+            <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; min-height: 3rem;">
+                @if (!string.IsNullOrEmpty(eval.Description) && eval.Description.Length > 100)
+                    {
+                @eval.Description.Substring(0, 100)@:...
+                    }
+                    else
+                    {
+                @(eval.Description ?? "Aucune description")
+                    }
+            </p>
+
+            <!-- Date -->
+            <div style="display: flex; align-items: center; gap: 0.5rem; color: #9ca3af; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                <span>Créée le @eval.DateCreation.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid #f3f4f6;">
+                <a asp-action="Details" asp-route-id="@eval.Id" style="flex: 1; text-align: center; padding: 0.6rem; background: #f9fafb; color: #374151; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
+                    Détails
+                </a>
+                <a asp-action="Edit" asp-route-id="@eval.Id" style="flex: 1; text-align: center; padding: 0.6rem; background: #eff6ff; color: #2563eb; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
+                    Modifier
+                </a>
+                <a asp-action="Delete" asp-route-id="@eval.Id" style="flex: 1; text-align: center; padding: 0.6rem; background: #fef2f2; color: #dc2626; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
+                    Supprimer
+                </a>
+            </div>
+        </div>
+        }
+    </div>
+}
+else
+{
+    <div style="background: white; border-radius: 16px; padding: 4rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">??</div>
+        <h3 style="font-size: 1.5rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Aucune évaluation</h3>
+        <p style="color: #6b7280; margin-bottom: 2rem;">Commencez par créer votre première évaluation</p>
+        <a asp-action="Create" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.2rem;">+</span>
+            Créer une évaluation
+        </a>
+    </div>
 }
 
-<h1>Index</h1>
+    <style>
+        /* Hover effects */
+        div[style*="box-shadow: 0 1px 3px"]:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DureeMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Titre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DureeMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreation)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        a[style*="background: #f9fafb"]:hover {
+            background: #e5e7eb !important;
+        }
+
+        a[style*="background: #eff6ff"]:hover {
+            background: #dbeafe !important;
+        }
+
+        a[style*="background: #fef2f2"]:hover {
+            background: #fee2e2 !important;
+        }
+
+        a[style*="background: linear-gradient"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4) !important;
+        }
+    </style>

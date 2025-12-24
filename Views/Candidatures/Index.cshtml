@@ -1,41 +1,41 @@
 @using Microsoft.EntityFrameworkCore
 @model IEnumerable<WebApplication1.Models.Candidature>
-  @{
+@{
     ViewData["Title"] = "Candidatures";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
-  }
-
-  <div class="page-header mb-4">
-    <div>
-      <h1 class="page-title" style="font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">?? Candidatures</h1>
-      <p class="page-subtitle" style="color: #6b7280; font-size: 1rem;">
-        Examinez les CVs uploadés et validez les candidats pour les tests
-      </p>
-    </div>
-  </div>
-
-  @if (TempData["Success"] != null)
-{
-  <div style="background: #d1fae5; border: 1px solid #10b981; padding: 14px 18px; border-radius: 12px; margin-bottom: 24px; color: #065f46; font-weight: 500;">
-    ? @TempData["Success"]
-  </div>
 }
 
-  @if (!Model.Any())
+<div class="page-header mb-4">
+    <div>
+        <h1 class="page-title" style="font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">Candidatures</h1>
+        <p class="page-subtitle" style="color: #6b7280; font-size: 1rem;">
+            Examinez les CVs uploadÃ©s et validez les candidats pour les tests
+        </p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
 {
-  <div style="background: white; border-radius: 16px; padding: 64px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <div style="font-size: 64px; margin-bottom: 24px;">??</div>
-    <h3 style="color: #111827; margin-bottom: 12px;">Aucune candidature en attente</h3>
-    <p style="color: #6b7280;">Les nouveaux CVs uploadés apparaîtront ici.</p>
-  </div>
+    <div style="background: #d1fae5; border: 1px solid #10b981; padding: 14px 18px; border-radius: 12px; margin-bottom: 24px; color: #065f46; font-weight: 500;">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div style="background: white; border-radius: 16px; padding: 64px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <div style="font-size: 64px; margin-bottom: 24px;">ðŸ“‹</div>
+        <h3 style="color: #111827; margin-bottom: 12px;">Aucune candidature en attente</h3>
+        <p style="color: #6b7280;">Les nouveaux CVs uploadÃ©s apparaÃ®tront ici.</p>
+    </div>
 }
 else
 {
-  <div style="display: grid; gap: 1.5rem;">
-    @foreach (var candidature in Model)
+    <div style="display: grid; gap: 1.5rem;">
+        @foreach (var candidature in Model)
         {
             var candidat = candidature.Candidat;
-            var initiales = "?";
+            var initiales = "C";
             var nomComplet = "Candidat";
             var email = "email@example.com";
 
@@ -48,117 +48,121 @@ else
 
                 initiales = (prenom.Length > 0 ? prenom[0].ToString() : "") +
                            (nom.Length > 0 ? nom[0].ToString() : "");
-                if (string.IsNullOrWhiteSpace(initiales)) initiales = "?";
+                if (string.IsNullOrWhiteSpace(initiales)) initiales = "C";
 
                 email = candidat.Email ?? "email@example.com";
             }
 
-            var dateFormatee = candidature.DateCandidature.ToString("dd/MM/yyyy à HH:mm");
+            var dateFormatee = candidature.DateCandidature.ToString("dd/MM/yyyy Ã  HH:mm");
             var statutCouleur = candidature.Statut == "En attente"
                 ? "background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid #f59e0b;"
-                : candidature.Statut == "Validé"
+                : candidature.Statut == "ValidÃ©"
                 ? "background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid #10b981;"
                 : "background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444;";
 
-    <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #14b8a6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px;">
-            @initiales.ToUpper()
-          </div>
-          <div>
-            <h3 style="font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 4px;">@nomComplet</h3>
-            <p style="color: #6b7280; font-size: 0.95rem; margin: 0;">@email</p>
-          </div>
-        </div>
+            <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #14b8a6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px;">
+                            @initiales.ToUpper()
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 4px;">@nomComplet</h3>
+                            <p style="color: #6b7280; font-size: 0.95rem; margin: 0;">@email</p>
+                        </div>
+                    </div>
 
-        <div style="text-align: right;">
-          <span style="padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; @statutCouleur">
-            @candidature.Statut
-          </span>
-          <p style="color: #9ca3af; font-size: 0.85rem; margin-top: 8px;">?? @dateFormatee</p>
-        </div>
-      </div>
+                    <div style="text-align: right;">
+                        <span style="padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; @statutCouleur">
+                            @candidature.Statut
+                        </span>
+                        <p style="color: #9ca3af; font-size: 0.85rem; margin-top: 8px;">@dateFormatee</p>
+                    </div>
+                </div>
 
-      <div style="background: #f9fafb; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <span style="font-size: 32px;">??</span>
-          <div style="flex: 1;">
-            <p style="font-weight: 600; color: #374151; margin-bottom: 4px;">CV déposé</p>
-            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Format PDF</p>
-          </div>
-          <a href="@candidature.CvPdfPath" target="_blank" style="padding: 10px 20px; background: #10b981; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
-            ?? Voir le CV
-          </a>
-        </div>
-      </div>
+                <div style="background: #f9fafb; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <svg style="width: 32px; height: 32px; color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <div style="flex: 1;">
+                            <p style="font-weight: 600; color: #374151; margin-bottom: 4px;">CV dÃ©posÃ©</p>
+                            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Format PDF</p>
+                        </div>
+                        <a href="@candidature.CvPdfPath" target="_blank" style="padding: 10px 20px; background: #10b981; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;">
+                            Voir le CV
+                        </a>
+                    </div>
+                </div>
 
-      @if (candidature.Statut == "En attente")
+                @if (candidature.Statut == "En attente")
                 {
-      <div style="display: flex; gap: 12px; justify-content: flex-end;">
-        <form method="post" asp-action="Valider" asp-route-id="@candidature.Id" style="display: inline;">
-          @Html.AntiForgeryToken()
-          <button type="submit" style="padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
-            ? Valider et envoyer email
-          </button>
-        </form>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <form method="post" asp-action="Valider" asp-route-id="@candidature.Id" style="display: inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" style="padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
+                                Valider et envoyer email
+                            </button>
+                        </form>
 
-        <button onclick="rejeterCandidature(@candidature.Id)" style="padding: 12px 24px; background: white; color: #ef4444; border: 2px solid #ef4444; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-          ? Rejeter
-        </button>
-      </div>
+                        <button onclick="rejeterCandidature(@candidature.Id)" style="padding: 12px 24px; background: white; color: #ef4444; border: 2px solid #ef4444; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            Rejeter
+                        </button>
+                    </div>
                 }
-                else if (candidature.Statut == "Validé")
+                else if (candidature.Statut == "ValidÃ©")
                 {
-      <div style="background: #d1fae5; border: 1px solid #10b981; border-radius: 10px; padding: 12px 16px;">
-        <p style="color: #047857; font-weight: 600; margin: 0;">
-          ? Validé le @(candidature.DateApprobation?.ToString("dd/MM/yyyy") ?? "N/A") - Email envoyé
-        </p>
-      </div>
+                    <div style="background: #d1fae5; border: 1px solid #10b981; border-radius: 10px; padding: 12px 16px;">
+                        <p style="color: #047857; font-weight: 600; margin: 0;">
+                            ValidÃ© le @(candidature.DateApprobation?.ToString("dd/MM/yyyy") ?? "N/A") - Email envoyÃ©
+                        </p>
+                    </div>
                 }
-                else if (candidature.Statut == "Rejeté")
+                else if (candidature.Statut == "RejetÃ©")
                 {
-      <div style="background: #fee2e2; border: 1px solid #ef4444; border-radius: 10px; padding: 12px 16px;">
-        <p style="color: #991b1b; font-weight: 600; margin-bottom: 4px;">? Candidature rejetée</p>
-        @if (!string.IsNullOrEmpty(candidature.CommentaireRejet))
+                    <div style="background: #fee2e2; border: 1px solid #ef4444; border-radius: 10px; padding: 12px 16px;">
+                        <p style="color: #991b1b; font-weight: 600; margin-bottom: 4px;">Candidature rejetÃ©e</p>
+                        @if (!string.IsNullOrEmpty(candidature.CommentaireRejet))
                         {
-        <p style="color: #7f1d1d; margin: 0; font-size: 0.9rem;">Motif : @candidature.CommentaireRejet</p>
+                            <p style="color: #7f1d1d; margin: 0; font-size: 0.9rem;">Motif : @candidature.CommentaireRejet</p>
                         }
-      </div>
+                    </div>
                 }
-    </div>
+            </div>
         }
-  </div>
+    </div>
 }
 
-  <!-- Modal Rejet -->
-  <div id="rejectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+<!-- Modal Rejet -->
+<div id="rejectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
     <div style="background: white; border-radius: 20px; padding: 32px; max-width: 500px; width: 90%;">
-      <h3 style="font-size: 1.5rem; font-weight: 700; color: #111827; margin-bottom: 16px;">? Rejeter la candidature</h3>
-      <p style="color: #6b7280; margin-bottom: 24px;">Indiquez le motif du rejet (optionnel) :</p>
+        <h3 style="font-size: 1.5rem; font-weight: 700; color: #111827; margin-bottom: 16px;">Rejeter la candidature</h3>
+        <p style="color: #6b7280; margin-bottom: 24px;">Indiquez le motif du rejet (optionnel) :</p>
 
-      <form id="rejectForm" method="post" asp-action="Rejeter">
-        @Html.AntiForgeryToken()
-        <input type="hidden" id="rejectId" name="id" />
-        <textarea name="commentaire" rows="4" placeholder="Ex: Profil ne correspond pas au poste..." style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 15px; margin-bottom: 20px;"></textarea>
+        <form id="rejectForm" method="post" asp-action="Rejeter">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="rejectId" name="id" />
+            <textarea name="commentaire" rows="4" placeholder="Ex: Profil ne correspond pas au poste..." style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 15px; margin-bottom: 20px;"></textarea>
 
-        <div style="display: flex; gap: 12px; justify-content: flex-end;">
-          <button type="button" onclick="closeRejectModal()" style="padding: 12px 24px; background: #f3f4f6; color: #374151; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-            Annuler
-          </button>
-          <button type="submit" style="padding: 12px 24px; background: #ef4444; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-            Confirmer le rejet
-          </button>
-        </div>
-      </form>
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button type="button" onclick="closeRejectModal()" style="padding: 12px 24px; background: #f3f4f6; color: #374151; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                    Annuler
+                </button>
+                <button type="submit" style="padding: 12px 24px; background: #ef4444; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                    Confirmer le rejet
+                </button>
+            </div>
+        </form>
     </div>
-  </div>
+</div>
 
-  <script>function rejeterCandidature(id) {
+<script>
+    function rejeterCandidature(id) {
         document.getElementById('rejectId').value = id;
         document.getElementById('rejectModal').style.display = 'flex';
     }
 
     function closeRejectModal() {
         document.getElementById('rejectModal').style.display = 'none';
-    }</script>
+    }
+</script>

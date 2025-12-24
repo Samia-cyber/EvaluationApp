@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Accueil - Plateforme d'Évaluation";
+    ViewData["Title"] = "HireDesk - Plateforme de Recrutement Intelligente";
 }
 
 <!DOCTYPE html>
@@ -7,305 +7,356 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="~/css/home-creative.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: moveGrid 20s linear infinite;
+    }
+
+    @@keyframes moveGrid {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .hero-content {
+      text-align: center;
+      color: white;
+      z-index: 1;
+      max-width: 900px;
+      padding: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-gradient-bar {
+      width: 100px;
+      height: 6px;
+      background: linear-gradient(90deg, #fbbf24, #f97316, #ef4444);
+      margin: 0 auto 2rem;
+      border-radius: 3px;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      opacity: 0.95;
+      margin-bottom: 3rem;
+      font-weight: 400;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1.25rem 3rem;
+      background: white;
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      color: #059669;
+    }
+
+    /* HOW IT WORKS */
+    .how-it-works {
+      padding: 6rem 2rem;
+      background: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.25rem;
+      color: #64748b;
+      margin-bottom: 4rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 3rem;
+    }
+
+    .step-card {
+      background: #f8fafc;
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .step-card:hover {
+      border-color: #10b981;
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+    }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 0 auto 1.5rem;
+    }
+
+    .step-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #1e293b;
+    }
+
+    .step-card p {
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, #f8fafc 0%, #e0e7ff 100%);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #1e293b;
+    }
+
+    .feature-card p {
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      text-align: center;
+      color: white;
+    }
+
+    .cta-section h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section p {
+      font-size: 1.25rem;
+      margin-bottom: 3rem;
+      opacity: 0.95;
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .cta-section h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- HERO SECTION -->
-  <section class="home-hero">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Transformez Votre Processus de Recrutement</h1>
+      <div class="hero-gradient-bar"></div>
+      <p>La plateforme intelligente pour évaluer et sélectionner vos meilleurs talents</p>
+      <a href="@Url.Action("Postuler", "Candidatures")" class="cta-btn">Postuler Maintenant →</a>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
     <div class="container">
-      <div class="hero-inner">
-        <h1>
-          Transformez Votre Processus de Recrutement
-        </h1>
-        <p class="lead">
-          La plateforme intelligente pour évaluer vos candidats
-        </p>
-        <p class="hero-description">
-          Une solution moderne et intuitive qui révolutionne la manière dont vous gérez,
-          évaluez et sélectionnez vos talents. Gagnez du temps, prenez de meilleures
-          décisions et optimisez votre recrutement avec des outils puissants et élégants.
-        </p>
-        <div class="hero-cta">
-          <a href="@Url.Action("Postuler", "Candidatures")" class="btn btn-primary">
-            Commencer Maintenant
-          </a>
+      <h2 class="section-title">Comment ça marche ?</h2>
+      <p class="section-subtitle">Un processus simple et efficace en 4 étapes</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon">📤</div>
+          <h3>Postulez avec votre CV</h3>
+          <p>Uploadez votre CV en PDF et créez votre profil candidat en quelques clics</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon">✅</div>
+          <h3>Validation par l'équipe RH</h3>
+          <p>Notre équipe examine votre candidature et vous envoie un email de confirmation</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon">📝</div>
+          <h3>Passez les évaluations</h3>
+          <p>Accédez aux tests en ligne via le lien reçu par email et démontrez vos compétences</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <div class="step-icon">🎯</div>
+          <h3>Entretien si qualifié</h3>
+          <p>Score ≥ 60% ? Félicitations ! Vous recevrez une invitation pour un entretien</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- STATS SECTION -->
-  <section class="stats-section" id="stats">
+  <!-- FEATURES -->
+  <section class="features">
     <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <h3>2,500+</h3>
-          <p>Candidats Évalués</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">✅</div>
-          <h3>5,000+</h3>
-          <p>Évaluations Complètes</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">⭐</div>
-          <h3>98%</h3>
-          <p>Taux de Satisfaction</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">⚡</div>
-          <h3>-60%</h3>
-          <p>Temps de Recrutement</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES SECTION -->
-  <section class="features-section" id="features">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Fonctionnalités Puissantes</h2>
-        <p class="section-subtitle">
-          Tous les outils dont vous avez besoin pour un recrutement efficace
-        </p>
-      </div>
+      <h2 class="section-title">Pourquoi HireDesk ?</h2>
+      <p class="section-subtitle">Les avantages de notre plateforme</p>
 
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">🎯</div>
-          <h3>Gestion Centralisée</h3>
-          <p>
-            Gérez tous vos candidats au même endroit avec une interface intuitive.
-            Filtrez, organisez et accédez rapidement aux profils importants.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Évaluations Avancées</h3>
-          <p>
-            Créez des grilles d'évaluation personnalisées avec scoring automatique.
-            Suivez les performances en temps réel avec des tableaux de bord détaillés.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📈</div>
-          <h3>Analytics & Rapports</h3>
-          <p>
-            Visualisez vos données avec des graphiques interactifs.
-            Exportez des rapports complets pour une analyse approfondie.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🎨</div>
-          <h3>Interface Moderne</h3>
-          <p>
-            Design élégant et responsive qui s'adapte à tous les appareils.
-            Navigation fluide et expérience utilisateur optimale.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔒</div>
-          <h3>Sécurité Garantie</h3>
-          <p>
-            Vos données sont protégées avec un cryptage de bout en bout.
-            Conformité RGPD et standards de sécurité les plus élevés.
-          </p>
+          <h3>Évaluations Intelligentes</h3>
+          <p>Tests personnalisés avec scoring automatique et résultats instantanés</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">⚡</div>
-          <h3>Performances Optimales</h3>
-          <p>
-            Plateforme rapide et réactive capable de gérer des milliers de candidatures.
-            Recherche instantanée et chargement ultra-rapide.
-          </p>
+          <h3>Processus Rapide</h3>
+          <p>De la candidature à l'entretien en quelques jours seulement</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Suivi en Temps Réel</h3>
+          <p>Consultez l'état de votre candidature et vos scores à tout moment</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- RECENT EVALUATIONS SECTION -->
-  <section class="recent-section">
+  <!-- CTA FINAL -->
+  <section class="cta-section">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Évaluations Récentes</h2>
-        <p class="section-subtitle">
-          Aperçu des dernières évaluations effectuées
-        </p>
-      </div>
-
-      <div class="recent-grid">
-        <div class="eval-card">
-          <h4>Développeur Full Stack</h4>
-          <p class="eval-meta">Il y a 2 heures</p>
-          <div class="eval-stats">
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">8.5</span>
-              <span>Note</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">12</span>
-              <span>Questions</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">45min</span>
-              <span>Durée</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="eval-card">
-          <h4>Designer UX/UI</h4>
-          <p class="eval-meta">Il y a 5 heures</p>
-          <div class="eval-stats">
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">9.2</span>
-              <span>Note</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">10</span>
-              <span>Questions</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">35min</span>
-              <span>Durée</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="eval-card">
-          <h4>Chef de Projet</h4>
-          <p class="eval-meta">Il y a 1 jour</p>
-          <div class="eval-stats">
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">7.8</span>
-              <span>Note</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">15</span>
-              <span>Questions</span>
-            </div>
-            <div class="eval-stat-item">
-              <span class="eval-stat-value">50min</span>
-              <span>Durée</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <h2>Prêt à Commencer ?</h2>
+      <p>Rejoignez les centaines de candidats qui ont trouvé leur opportunité grâce à HireDesk</p>
+      <a href="@Url.Action("Postuler", "Candidatures")" class="cta-btn">Postuler Maintenant →</a>
     </div>
   </section>
-
-  <!-- CTA SECTION -->
-  <section class="recent-section" style="margin-top: 4rem; margin-bottom: 4rem;">
-    <div class="container text-center">
-      <div class="section-header">
-        <h2 class="section-title">Prêt à Commencer ?</h2>
-        <p class="section-subtitle" style="max-width: 700px; margin: 0 auto 2rem;">
-          Rejoignez des centaines d'entreprises qui ont déjà transformé leur processus
-          de recrutement avec notre plateforme moderne et intuitive.
-        </p>
-      </div>
-      <div class="hero-cta">
-        <a href="@Url.Action("Postuler", "Candidatures")" class="btn btn-primary">
-          Postuler Maintenant
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    // Smooth scroll pour les ancres
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Animation au scroll
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    // Observer les cartes de fonctionnalités
-    document.querySelectorAll('.feature-card, .stat-card, .eval-card').forEach((card) => {
-      observer.observe(card);
-    });
-
-    // Effet navbar au scroll
-    let lastScroll = 0;
-    const navbar = document.querySelector('.navbar');
-
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset;
-
-      if (currentScroll > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-
-      lastScroll = currentScroll;
-    });
-
-    // Animation des statistiques (compteur)
-    const animateValue = (element, start, end, duration) => {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const value = Math.floor(progress * (end - start) + start);
-        element.textContent = value + (end >= 1000 ? '+' : '%');
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
-      };
-      window.requestAnimationFrame(step);
-    };
-
-    // Animer les chiffres au scroll
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-          const value = entry.target.textContent.replace(/[^0-9]/g, '');
-          const numValue = parseInt(value);
-          animateValue(entry.target, 0, numValue, 2000);
-          entry.target.classList.add('animated');
-        }
-      });
-    }, { threshold: 0.5 });
-
-    document.querySelectorAll('.stat-card h3').forEach(stat => {
-      statsObserver.observe(stat);
-    });
-  </script>
 
 </body>
 </html>

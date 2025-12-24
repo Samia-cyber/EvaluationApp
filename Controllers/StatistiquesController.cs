@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrateur")]
     public class StatistiquesController : Controller
     {
         private readonly ApplicationDbContext _db;

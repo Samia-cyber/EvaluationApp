@@ -2,10 +2,10 @@
     ViewData["Title"] = "Statistiques";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 
-    var totalCandidats = ViewBag.TotalCandidats;
-    var tauxReussite = ViewBag.TauxReussite;
-    var entretiensThisMonth = ViewBag.EntretiensThisMonth;
-    var candidatsEmbauches = ViewBag.CandidatsEmbauches;
+    var totalCandidats = ViewBag.TotalCandidats ?? 0;
+    var tauxReussite = ViewBag.TauxReussite ?? 0.0;
+    var entretiensThisMonth = ViewBag.EntretiensThisMonth ?? 0;
+    var candidatsEmbauches = ViewBag.CandidatsEmbauches ?? 0;
     var statutsRepartition = ViewBag.StatutsRepartition as List<dynamic>;
     var topCandidats = ViewBag.TopCandidats as List<WebApplication1.Models.Candidat>;
     var candidaturesParMois = ViewBag.CandidaturesParMois as List<dynamic>;
@@ -13,7 +13,7 @@
 }
 
 <div class="page-header mb-4">
-    <h1 style="font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">?? Statistiques</h1>
+    <h1 style="font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">Statistiques</h1>
     <p style="color: #6b7280; font-size: 1rem;">Vue d'ensemble des performances de recrutement</p>
 </div>
 
@@ -63,7 +63,7 @@
 
 <!-- Top 10 Candidats -->
 <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 20px;">?? Top 10 Candidats</h3>
+    <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 20px;">Top 10 Candidats</h3>
 
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -80,18 +80,14 @@
                 int rank = 1;
                 foreach (var candidat in topCandidats)
                 {
-                    var medalEmoji = rank == 1 ? "??" : rank == 2 ? "??" : rank == 3 ? "??" : "";
+                    var badgeColor = rank == 1 ? "#fbbf24" : rank == 2 ? "#9ca3af" : rank == 3 ? "#cd7f32" : "#e5e7eb";
+                    var textColor = rank <= 3 ? "white" : "#6b7280";
 
             <tr style="border-bottom: 1px solid #f3f4f6;">
-                <td style="padding: 16px; text-align: center; font-size: 1.5rem;">
-                    @if (rank <= 3)
-                            {
-                    @medalEmoji
-                            }
-                            else
-                            {
-                    <span style="font-size: 1rem; font-weight: 600; color: #6b7280;">@rank</span>
-                            }
+                <td style="padding: 16px; text-align: center;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: @badgeColor; display: inline-flex; align-items: center; justify-content: center; color: @textColor; font-weight: 700; font-size: 1.1rem;">
+                        @rank
+                    </div>
                 </td>
                 <td style="padding: 16px;">
                     <div style="font-weight: 600; color: #111827;">@candidat.Prenom @candidat.Nom</div>
@@ -99,7 +95,7 @@
                 </td>
                 <td style="padding: 16px; text-align: center;">
                     <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">
-                        @candidat.ScoreGlobal?.ToString("F1")%
+                        @(candidat.ScoreGlobal?.ToString("F1") ?? "0.0")%
                     </div>
                 </td>
                 <td style="padding: 16px; text-align: center;">
@@ -132,8 +128,8 @@
     const candidaturesData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(candidaturesParMois ?? new List<dynamic>()));
 
     const monthNames = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-    const labels = candidaturesData.map(d => monthNames[d.month - 1] + ' ' + d.year);
-    const counts = candidaturesData.map(d => d.count);
+    const labels = candidaturesData.length > 0 ? candidaturesData.map(d => monthNames[d.month - 1] + ' ' + d.year) : ['Aucune donnée'];
+    const counts = candidaturesData.length > 0 ? candidaturesData.map(d => d.count) : [0];
 
     new Chart(candidaturesCtx, {
         type: 'line',
@@ -161,8 +157,8 @@
     const statutsCtx = document.getElementById('statutsChart').getContext('2d');
     const statutsData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(statutsRepartition ?? new List<dynamic>()));
 
-    const statutLabels = statutsData.map(s => s.statut || 'N/A');
-    const statutCounts = statutsData.map(s => s.count);
+    const statutLabels = statutsData.length > 0 ? statutsData.map(s => s.statut || 'N/A') : ['Aucune donnée'];
+    const statutCounts = statutsData.length > 0 ? statutsData.map(s => s.count) : [1];
 
     new Chart(statutsCtx, {
         type: 'doughnut',
@@ -190,8 +186,8 @@
     const scoresCtx = document.getElementById('scoresChart').getContext('2d');
     const scoresData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(scoresMoyens ?? new List<dynamic>()));
 
-    const evalLabels = scoresData.map(s => s.evaluation || 'N/A');
-    const evalScores = scoresData.map(s => s.scoreMoyen);
+    const evalLabels = scoresData.length > 0 ? scoresData.map(s => s.evaluation || 'N/A') : ['Aucune donnée'];
+    const evalScores = scoresData.length > 0 ? scoresData.map(s => s.scoreMoyen) : [0];
 
     new Chart(scoresCtx, {
         type: 'bar',

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrateur")]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -79,6 +79,45 @@ namespace WebApplication1.Controllers
             var inProgressCount = await _db.Tentatives
                 .CountAsync(t => t.Score == 0);
 
+            var tentativesNonTerminees = await _db.Tentatives
+                .CountAsync(t => t.Score == 0);
+
+            // ACTIVITÉS RÉCENTES
+            var activitesTentatives = recentTentatives
+                .Select(t => new
+                {
+                    Type = "evaluation",
+                    ActionBy = t.Candidat != null ? $"{t.Candidat.Prenom} {t.Candidat.Nom}" : "Candidat",
+                    ActionText = "a terminé l'évaluation de",
+                    TargetName = t.Evaluation?.Titre ?? "Évaluation",
+                    Date = t.DatePassage,
+                    Badge = "évaluation"
+                })
+                .ToList();
+
+            var activitesEntretiens = await _db.Entretiens
+                .Include(e => e.Candidat)
+                .OrderByDescending(e => e.DateCreation)
+                .Take(5)
+                .Select(e => new
+                {
+                    Type = "entretien",
+                    ActionBy = "Équipe RH",
+                    ActionText = "a planifié un entretien avec",
+                    TargetName = e.Candidat != null ? $"{e.Candidat.Prenom} {e.Candidat.Nom}" : "Candidat",
+                    Date = e.DateCreation,
+                    Badge = "entretien"
+                })
+                .ToListAsync();
+
+            var activitesRecentes = activitesTentatives
+                .Concat(activitesEntretiens)
+                .OrderByDescending(a => a.Date)
+                .Take(5)
+                .ToList();
+
+            ViewBag.ActivitesRecentes = activitesRecentes;
+
             // 🧠 VIEWMODEL (CLEAN & SINGLE)
             var model = new DashboardViewModel
             {
@@ -91,6 +130,7 @@ namespace WebApplication1.Controllers
                 EvaluationsTermineesCetteSemaine = evaluationsTermineesCetteSemaine,
                 ScoreMoyen = scoreMoyen,
                 InProgressCount = inProgressCount,
+                TentativesNonTerminees = tentativesNonTerminees,
                 RecentTentatives = recentTentatives
             };
 

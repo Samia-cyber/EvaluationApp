@@ -777,6 +777,7 @@ C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\ne
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.RazorAssemblyInfo.cache
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.RazorAssemblyInfo.cs
+C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.sourcelink.json
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -935,4 +936,3 @@ C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\ne
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.pdb
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.genruntimeconfig.cache
 C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\ref\PlateformeEvaluation.dll
-C:\Users\pc\OneDrive\Desktop\4th\.Net\EvaluationApp\WebApplication1\obj\Debug\net9.0\PlateformeEvaluation.sourcelink.json

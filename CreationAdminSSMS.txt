@@ -1,0 +1,25 @@
+Comment créer un administrateur de base de données SQL Server Management Studio (SSMS) : 
+
+
+-- Étape 1 : Récupérer l'Id de l'utilisateur et l'Id du rôle Administrateur:
+
+SELECT Id, Email FROM AspNetUsers WHERE Email = 'samouna@gmail.com'
+SELECT Id FROM AspNetRoles WHERE Name = 'Administrateur'
+INSERT INTO AspNetUserRoles (UserId, RoleId)
+VALUES (
+    '1adb26a2-fe5c-44b5-b9ef-5fd238d43078',         -- ? Colle ton User Id
+    '45354DD2-C1C9-471C-BA68-0055B8C6D4AD'          -- ? Colle l'Admin Role Id
+)
+
+-- Étape 2 : Vérifier que l'utilisateur a bien le rôle Administrateur:
+
+SELECT 
+    u.Email,
+    r.Name as Role
+FROM AspNetUsers u
+JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+JOIN AspNetRoles r ON ur.RoleId = r.Id
+WHERE u.Email = 'samouna@gmail.com'
+
+(les mot de passe): 
+Azerty@123

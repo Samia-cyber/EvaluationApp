@@ -1,21 +1,127 @@
 @model WebApplication1.Models.Evaluation
-
-<h2>@Model.Titre</h2>
-<p>@Model.Description</p>
-<p><strong>Durée :</strong> @Model.DureeMinutes minutes</p>
-
-<hr />
-
-@foreach (var q in Model.Questions)
-{
-    <h4>Question @q.Id: @q.Texte</h4>
-
-    <ul>
-        @foreach (var op in q.Options)
-        {
-            <li>@op.Texte</li>
-        }
-    </ul>
-
-    <hr/>
+@{
+    ViewData["Title"] = "Détails de l'évaluation";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
+
+<div style="max-width: 900px; margin: 0 auto;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: start;">
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 700; color: #111827; margin: 0;">@Model.Titre</h1>
+            <p style="color: #6b7280; margin-top: 0.5rem;">Détails de l'évaluation</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+            <a asp-action="Edit" asp-route-id="@Model.Id" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); transition: all 0.3s;">
+                Modifier
+            </a>
+            <a asp-action="Index" style="background: #f3f4f6; color: #374151; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; transition: all 0.2s;">
+                Retour
+            </a>
+        </div>
+    </div>
+
+    <!-- Info Card -->
+    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; margin-bottom: 2rem;">
+        <div style="display: grid; gap: 1.5rem;">
+            <!-- Description -->
+            <div>
+                <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Description</div>
+                <div style="color: #374151; line-height: 1.6; font-size: 1.05rem;">@(Model.Description ?? "Aucune description")</div>
+            </div>
+
+            <!-- Durée + Date -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;">
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Durée</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 1.1rem; font-weight: 600;">
+                            @Model.DureeMinutes minutes
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Date de création</div>
+                    <div style="color: #374151; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📅</span>
+                        <span>@Model.DateCreation.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("fr-FR"))</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Questions Section -->
+    @if (Model.Questions != null && Model.Questions.Any())
+    {
+    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; color: #111827; margin: 0 0 1.5rem 0;">
+            Questions (@Model.Questions.Count)
+        </h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            @foreach (var q in Model.Questions)
+                {
+            <div style="background: #f9fafb; border-radius: 12px; padding: 1.5rem; border: 1px solid #e5e7eb;">
+                <!-- Question -->
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; flex-shrink: 0;">
+                        @q.Id
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.1rem; font-weight: 600; color: #111827; margin: 0;">@q.Texte</h3>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                @if (q.Options != null && q.Options.Any())
+                        {
+                <div style="padding-left: 3rem;">
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        @foreach (var op in q.Options)
+                                    {
+                                        var isCorrect = op.EstCorrecte;
+                                        var bgColor = isCorrect ? "#ecfdf5" : "#f9fafb";
+                                        var borderColor = isCorrect ? "#10b981" : "#e5e7eb";
+                                        var textColor = isCorrect ? "#065f46" : "#374151";
+
+                        <div style="background: @bgColor; border: 2px solid @borderColor; padding: 0.75rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.75rem;">
+                            @if (isCorrect)
+                                            {
+                            <span style="color: #10b981; font-weight: 700;">✓</span>
+                                            }
+                                            else
+                                            {
+                            <span style="color: #9ca3af;">○</span>
+                                            }
+                            <span style="color: @textColor; font-weight: @(isCorrect ? "600" : "400");">@op.Texte</span>
+                        </div>
+                                    }
+                    </div>
+                </div>
+                        }
+            </div>
+                }
+        </div>
+    </div>
+    }
+    else
+    {
+    <div style="background: white; border-radius: 16px; padding: 3rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">❓</div>
+        <h3 style="font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Aucune question</h3>
+        <p style="color: #6b7280;">Cette évaluation ne contient pas encore de questions</p>
+    </div>
+    }
+</div>
+
+<style>
+    a[style*="background: linear-gradient(135deg, #2563eb"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4) !important;
+    }
+
+    a[style*="background: #f3f4f6"]:hover {
+        background: #e5e7eb !important;
+    }
+</style>

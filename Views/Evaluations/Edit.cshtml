@@ -1,48 +1,82 @@
 @model WebApplication1.Models.Evaluation
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modifier l'évaluation";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Edit</h1>
+<div style="max-width: 800px; margin: 0 auto;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 700; color: #111827; margin: 0;">Modifier l'évaluation</h1>
+        <p style="color: #6b7280; margin-top: 0.5rem;">Mettez à jour les informations de l'évaluation</p>
+    </div>
 
-<h4>Evaluation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <!-- Form Card -->
+    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6;">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;"></div>
+
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Titre" class="control-label"></label>
-                <input asp-for="Titre" class="form-control" />
-                <span asp-validation-for="Titre" class="text-danger"></span>
+
+            <!-- Titre -->
+            <div style="margin-bottom: 1.5rem;">
+                <label asp-for="Titre" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">Titre de l'évaluation</label>
+                <input asp-for="Titre" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.2s; outline: none;"
+                       onfocus="this.style.borderColor='#10b981'"
+                       onblur="this.style.borderColor='#e5e7eb'" />
+                <span asp-validation-for="Titre" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem; display: block;"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+
+            <!-- Description -->
+            <div style="margin-bottom: 1.5rem;">
+                <label asp-for="Description" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">Description</label>
+                <textarea asp-for="Description" rows="4" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.2s; outline: none; resize: vertical; font-family: inherit;"
+                          onfocus="this.style.borderColor='#10b981'"
+                          onblur="this.style.borderColor='#e5e7eb'"></textarea>
+                <span asp-validation-for="Description" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem; display: block;"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DureeMinutes" class="control-label"></label>
-                <input asp-for="DureeMinutes" class="form-control" />
-                <span asp-validation-for="DureeMinutes" class="text-danger"></span>
+
+            <!-- Durée -->
+            <div style="margin-bottom: 1.5rem;">
+                <label asp-for="DureeMinutes" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">Durée (en minutes)</label>
+                <input asp-for="DureeMinutes" type="number" min="1" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.2s; outline: none;"
+                       onfocus="this.style.borderColor='#10b981'"
+                       onblur="this.style.borderColor='#e5e7eb'" />
+                <span asp-validation-for="DureeMinutes" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem; display: block;"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateCreation" class="control-label"></label>
-                <input asp-for="DateCreation" class="form-control" />
-                <span asp-validation-for="DateCreation" class="text-danger"></span>
+
+            <!-- Date -->
+            <div style="margin-bottom: 1.5rem;">
+                <label asp-for="DateCreation" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">Date de création</label>
+                <input asp-for="DateCreation" type="datetime-local" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.2s; outline: none;"
+                       onfocus="this.style.borderColor='#10b981'"
+                       onblur="this.style.borderColor='#e5e7eb'" />
+                <span asp-validation-for="DateCreation" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem; display: block;"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;">
+                <button type="submit" style="flex: 1; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);">
+                    Enregistrer les modifications
+                </button>
+                <a asp-action="Index" style="flex: 1; background: #f3f4f6; color: #374151; padding: 0.875rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                    Annuler
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4) !important;
+    }
+
+    a[style*="background: #f3f4f6"]:hover {
+        background: #e5e7eb !important;
+    }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

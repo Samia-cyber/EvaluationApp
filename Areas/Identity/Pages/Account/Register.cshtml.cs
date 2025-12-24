@@ -73,10 +73,10 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser 
-                { 
-                    UserName = Input.Email, 
-                    Email = Input.Email 
+                var user = new IdentityUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -85,13 +85,18 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    //  ASSIGNER LE RÔLE "CANDIDAT" AUTOMATIQUEMENT
+                    await _userManager.AddToRoleAsync(user, "Candidat");
+                    _logger.LogInformation("User assigned to Candidat role.");
+
                     // Create Candidat record
                     var candidat = new Candidat
                     {
                         Nom = Input.Nom,
                         Prenom = Input.Prenom,
                         Email = Input.Email,
-                        UserId = user.Id
+                        UserId = user.Id,
+                        Statut = "En attente" // Statut par défaut
                     };
 
                     _context.Candidats.Add(candidat);

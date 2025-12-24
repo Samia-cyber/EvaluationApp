@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "Administrateur")]
     public class EvaluationsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -45,6 +47,8 @@ namespace WebApplication1.Controllers
                 return NotFound();
 
             var evaluation = await _context.Evaluations
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Options)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (evaluation == null)
@@ -52,7 +56,6 @@ namespace WebApplication1.Controllers
 
             return View(evaluation);
         }
-
         // GET: Evaluations/Create
         public IActionResult Create()
         {
@@ -149,9 +152,6 @@ namespace WebApplication1.Controllers
         }
 
 
-        // ============================================================
-        // YOUR PART — PASSER, SCORING, QUESTIONS, OPTIONS
-        // ============================================================
 
         // GET: Evaluate with questions & options
 public async Task<IActionResult> PasserEvaluation(int id)
@@ -312,6 +312,7 @@ public async Task<IActionResult> Submit(PasserEvaluationViewModel model)
 
     return RedirectToAction("Resultat");
 }
+
 public IActionResult Resultat()
 {
     return View();

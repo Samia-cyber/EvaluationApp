@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrateur")]
     public class EntretiensController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -87,6 +87,8 @@ namespace WebApplication1.Controllers
 
             return RedirectToAction("Index");
         }
+
+        
 
         // ? MARQUER COMME EMBAUCHÉ
         [HttpPost]

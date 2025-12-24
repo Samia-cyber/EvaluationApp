@@ -1,45 +1,91 @@
 @model WebApplication1.Models.Candidat
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Supprimer le candidat";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Delete</h1>
+<div style="max-width: 700px; margin: 0 auto;">
+    <!-- Warning Card -->
+    <div style="background: white; border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; text-align: center;">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Candidat</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nom)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nom)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prenom)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prenom)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        @* <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MotDePasse)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MotDePasse)
-        </dd> *@
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        <!-- Warning Icon -->
+        <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <svg style="width: 48px; height: 48px; color: #dc2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+        </div>
+
+        <!-- Title -->
+        <h1 style="font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 0.5rem 0;">Supprimer ce candidat ?</h1>
+        <p style="color: #6b7280; font-size: 1.05rem; margin-bottom: 2rem;">Cette action est irréversible. Toutes les données liées seront perdues.</p>
+
+        <!-- Candidat Info Card -->
+        <div style="background: #f9fafb; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; border: 1px solid #e5e7eb;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #ef4444, #dc2626); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem;">
+                    @{
+                        var initiales = "";
+                        if (!string.IsNullOrEmpty(Model.Prenom) && Model.Prenom.Length > 0)
+                            initiales += Model.Prenom[0];
+                        if (!string.IsNullOrEmpty(Model.Nom) && Model.Nom.Length > 0)
+                            initiales += Model.Nom[0];
+                        if (string.IsNullOrEmpty(initiales))
+                            initiales = "C";
+                    }
+                    @initiales.ToUpper()
+                </div>
+                <div>
+                    <div style="font-size: 1.25rem; font-weight: 600; color: #111827;">@Model.Prenom @Model.Nom</div>
+                    <div style="color: #6b7280; font-size: 0.95rem;">@Model.Email</div>
+                </div>
+            </div>
+
+            <div style="display: grid; gap: 1rem;">
+                @if (!string.IsNullOrEmpty(Model.Statut))
+                {
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Statut</div>
+                    <div>
+                        <span style="padding: 6px 12px; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid #10b981; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                            @Model.Statut
+                        </span>
+                    </div>
+                </div>
+                }
+
+                @if (Model.ScoreGlobal.HasValue)
+                {
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Score Global</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; color: #10b981;">
+                        @Model.ScoreGlobal.Value.ToString("F1")%
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <form asp-action="Delete" method="post" style="display: flex; gap: 1rem;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <a asp-action="Index" style="flex: 1; background: #f3f4f6; color: #374151; padding: 0.875rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                Annuler
+            </a>
+            <button type="submit" style="flex: 1; background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.3);">
+                Oui, supprimer
+            </button>
+        </form>
+    </div>
 </div>
+
+<style>
+    button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(220, 38, 38, 0.4) !important;
+    }
+
+    a[style*="background: #f3f4f6"]:hover {
+        background: #e5e7eb !important;
+    }
+</style>

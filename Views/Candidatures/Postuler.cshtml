@@ -253,7 +253,7 @@
 <body>
     <div class="container">
         <a href="@Url.Action("Index", "Home")" class="back-link">
-            ? Retour à l'accueil
+            ? Retour ï¿½ l'accueil
         </a>
 
         <div class="header">
@@ -270,7 +270,7 @@
         @if (isLoggedIn)
         {
             <div class="info-badge">
-                ? Connecté en tant que @email
+                ? Connectï¿½ en tant que @email
             </div>
         }
 
@@ -306,7 +306,7 @@
             </div>
 
             <div class="form-group">
-                <label>Prénom *</label>
+                <label>Prï¿½nom *</label>
                 <input type="text" 
                        name="prenom" 
                        required 
@@ -339,7 +339,7 @@
                     <input type="file" name="cvPdf" accept=".pdf" required id="fileInput" />
                     <div class="upload-icon">??</div>
                     <div class="upload-text" id="uploadText">Cliquez ou glissez votre CV ici</div>
-                    <div class="upload-hint">Format PDF uniquement • Max 5 MB</div>
+                    <div class="upload-hint">Format PDF uniquement ï¿½ Max 5 MB</div>
                     <div id="fileName" style="display: none;"></div>
                 </div>
             </div>
@@ -365,7 +365,6 @@
             }
         });
 
-        // Drag & drop
         fileUpload.addEventListener('dragover', (e) => {
             e.preventDefault();
             fileUpload.classList.add('dragover');

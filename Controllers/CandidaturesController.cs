@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "Administrateur")]
     public class CandidaturesController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -151,7 +152,9 @@ namespace WebApplication1.Controllers
 
             TempData["Success"] = $"Candidature validée ! Email envoyé à {candidature.Candidat.Email}";
             return RedirectToAction("Index");
-        }   
+        }
+
+        
         
         // ? REJETER UNE CANDIDATURE (HR/Admin)
         [Authorize]
